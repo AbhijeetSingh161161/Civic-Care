@@ -88,7 +88,7 @@ function seed(){return{
  ap:[{ref:'APT-2026-558201',name:'Sunil Verma',mobile:'9876500033',doc:1,date:new Date(Date.now()+864e5).toISOString().slice(0,10),reason:'Chest discomfort follow-up',status:'Requested',at:ago(200)}]
 }}
 let S;try{S=JSON.parse(localStorage.getItem('cc2'))}catch(e){}if(!S)S=seed();
-const SB_URL='https://fetmflpvetirngjdbxnd.supabase.co',SB_KEY='YOUR_SUPABASE_ANON_KEY';
+const SB_URL='https://fetmflpvetirngjdbxnd.supabase.co',SB_KEY='sb_publishable_gjNykIzy5h33RfDekMKRVQ_coO1KZNk';
 const SB_ON=!SB_URL.startsWith('YOUR_'),SBH={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'};
 let lastRev='';
 const save=()=>{try{localStorage.setItem('cc2',JSON.stringify(S))}catch(e){}
