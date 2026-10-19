@@ -89,7 +89,7 @@ function seed(){return{
 }}
 let S;try{S=JSON.parse(localStorage.getItem('cc2'))}catch(e){}if(!S)S=seed();
 const SB_URL='https://fetmflpvetirngjdbxnd.supabase.co',SB_KEY='sb_publishable_gjNykIzy5h33RfDekMKRVQ_coO1KZNk';
-const SB_ON=!SB_URL.startsWith('YOUR_'),SBH={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'};
+const SB_ON=!SB_URL.startsWith('YOUR_'),SBH={apikey:SB_KEY,'Content-Type':'application/json'};
 let lastRev='';
 const save=()=>{try{localStorage.setItem('cc2',JSON.stringify(S))}catch(e){}
  if(SB_ON){lastRev=String(Date.now());fetch(SB_URL+'/rest/v1/app_state?on_conflict=id',{method:'POST',headers:{...SBH,Prefer:'resolution=merge-duplicates'},body:JSON.stringify({id:'main',data:S,rev:lastRev})}).catch(()=>toast('Could not sync. Saved on this device only.'))}};
