@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CivicCare</title>
+<style>
+:root{--bg:#f4f7f8;--card:#fff;--ink:#12303a;--mut:#5b7480;--pri:#0f766e;--pri2:#0b5d57;--acc:#1d4ed8;--bd:#dbe5e8;--ok:#15803d;--warn:#b45309;--bad:#b91c1c;--okb:#dcfce7;--warnb:#fef3c7;--badb:#fee2e2;--gray:#e5eaec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0c1a1f;--card:#14272e;--ink:#e6f1f3;--mut:#93aeb7;--pri:#2dd4bf;--pri2:#5eead4;--acc:#7aa2ff;--bd:#25414a;--okb:#12391f;--warnb:#3d2d0b;--badb:#431515;--gray:#25353b;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0c1a1f;--card:#14272e;--ink:#e6f1f3;--mut:#93aeb7;--pri:#2dd4bf;--pri2:#5eead4;--acc:#7aa2ff;--bd:#25414a;--okb:#12391f;--warnb:#3d2d0b;--badb:#431515;--gray:#25353b;--ok:#4ade80;--warn:#fbbf24;--bad:#f87171}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc);text-decoration:none}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--bd)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.nav{display:flex;align-items:center;gap:12px;height:58px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;color:var(--ink)}
+.logo svg{width:30px;height:30px}
+.links{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.links a{padding:7px 11px;border-radius:8px;color:var(--ink);font-weight:600;font-size:14px}
+.links a.on,.links a:hover{background:var(--gray)}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--bd);border-radius:8px;padding:6px 10px;color:var(--ink);font-size:18px;cursor:pointer}
+@media(max-width:720px){.burger{display:block}.links{display:none;position:absolute;top:58px;left:0;right:0;background:var(--card);padding:10px 16px;flex-direction:column;border-bottom:1px solid var(--bd)}.links.open{display:flex}}
+main{padding:22px 0 40px;min-height:70vh}
+.hero{background:linear-gradient(135deg,#0f766e,#1d4ed8);color:#fff;border-radius:16px;padding:34px 26px;margin-bottom:18px}
+.hero h1{margin:0 0 8px;font-size:clamp(24px,5vw,36px)}.hero p{margin:0 0 16px;opacity:.92;max-width:620px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.card h3{margin:0 0 6px}.mut{color:var(--mut);font-size:13px}
+.btn{display:inline-block;border:0;border-radius:9px;background:var(--pri);color:#fff;padding:9px 16px;font-weight:700;cursor:pointer;font-size:14px}
+.btn:hover{background:var(--pri2)}.btn.alt{background:var(--gray);color:var(--ink)}.btn.bad{background:var(--bad)}.btn.sm{padding:5px 10px;font-size:13px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700}
+.b-ok{background:var(--okb);color:var(--ok)}.b-warn{background:var(--warnb);color:var(--warn)}.b-bad{background:var(--badb);color:var(--bad)}.b-gray{background:var(--gray);color:var(--mut)}
+input,select,textarea{width:100%;padding:9px 11px;border:1px solid var(--bd);border-radius:9px;background:var(--card);color:var(--ink);font:inherit}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+.err{color:var(--bad);font-size:12px;min-height:0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>*{flex:1;min-width:150px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}.tabs a{padding:8px 14px;border-radius:99px;background:var(--card);border:1px solid var(--bd);color:var(--ink);font-weight:600;font-size:14px}.tabs a.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}th{color:var(--mut);font-size:12px;text-transform:uppercase}
+.empty{text-align:center;padding:28px;color:var(--mut)}
+.stamp{font-size:12px;color:var(--mut)}
+.toast{position:fixed;bottom:calc(18px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;z-index:30;font-weight:600}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;z-index:40;padding:16px}.modal .card{max-width:380px}
+.demo{background:var(--warnb);color:var(--warn);font-size:12px;text-align:center;padding:4px}
+footer{background:var(--card);border-top:1px solid var(--bd);padding:22px 0;color:var(--mut);font-size:13px}
+.spin{display:inline-block;width:16px;height:16px;border:3px solid var(--bd);border-top-color:var(--pri);border-radius:50%;animation:s .7s linear infinite;vertical-align:middle;margin-right:6px}@keyframes s{to{transform:rotate(360deg)}}
+</style></head><body>
+<div class="demo">Demonstration data only. Not a real government or hospital service.</div>
+<header><div class="wrap nav">
+<a class="logo" href="#/"><svg viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#0f766e"/><path d="M16 7v18M7 16h18" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="16" cy="16" r="9" fill="none" stroke="#93c5fd" stroke-width="1.5"/></svg>CivicCare</a>
+<button class="burger" aria-label="Menu" onclick="document.getElementById('lk').classList.toggle('open')">☰</button>
+<nav class="links" id="lk"><a href="#/" data-r="home">Home</a><a href="#/rtps/info" data-r="rtps">RTPS Seva Kendra</a><a href="#/hospital/doctors" data-r="hospital">Smart Hospital</a><a href="#/staff" data-r="staff">Staff login</a></nav>
+</div></header>
+<main><div class="wrap" id="app"></div></main>
+<footer><div class="wrap"><b>CivicCare</b> · Help desk: 1800-000-0000 (demo) · help@civiccare.example · Mon–Sat, 9 AM–6 PM<br>© 2026 CivicCare demonstration platform.</div></footer>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const now=()=>new Date().toISOString(), ago=m=>new Date(Date.now()-m*6e4).toISOString();
+const fmt=i=>new Date(i).toLocaleString([], {dateStyle:'medium',timeStyle:'short'});
+const t12=t=>{if(!t)return'';let[h,m]=t.split(':').map(Number);return(h%12||12)+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM')};
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat'];
+function seed(){return{
+ rtps:{status:'Temporarily Unavailable',reason:'Lunch break',ret:'14:30',updated:ago(12),next:'14:00',hours:'10:00 AM – 5:00 PM',closedNote:'Closed on Sundays and public holidays.'},
+ services:[
+  {n:'Residence Certificate',d:'Proof of residence in the district.',docs:'Aadhaar card, ration card or electricity bill, passport photo.',days:'7 working days'},
+  {n:'Caste Certificate',d:'Certificate for category verification.',docs:'Aadhaar card, family caste record, self-declaration, photo.',days:'15 working days'},
+  {n:'Income Certificate',d:'Annual family income proof.',docs:'Aadhaar card, salary slip or self-declaration, photo.',days:'10 working days'}],
+ rn:[
+  {id:1,t:'Counter timings revised',b:'The counter now opens at 10:00 AM on weekdays.',st:'published',at:ago(300)},
+  {id:2,t:'Online applications open',b:'Citizens can submit applications online and track them with a reference number.',st:'published',at:ago(900)}],
+ apps:[
+  {ref:'RTPS-2026-104822',name:'Anita Kumari',mobile:'9876500011',service:'Residence Certificate',addr:'Kankarbagh, Patna',status:'Under Review',at:ago(2900)},
+  {ref:'RTPS-2026-377410',name:'Rohit Singh',mobile:'9876500022',service:'Caste Certificate',addr:'Boring Road, Patna',status:'Submitted',at:ago(400)}],
+ act:['Demo data loaded'],
+ docs:[
+  {id:1,n:'Dr. Meera Sharma',sp:'Cardiologist',dep:'Cardiology',hrs:'10:00 AM – 1:00 PM',days:['Mon','Wed','Fri'],room:'204',fl:2,st:'Available',ret:''},
+  {id:2,n:'Dr. Arjun Prasad',sp:'Orthopedic Surgeon',dep:'Orthopedics',hrs:'11:00 AM – 3:00 PM',days:['Tue','Thu','Sat'],room:'112',fl:1,st:'Consulting',ret:''},
+  {id:3,n:'Dr. Sana Iqbal',sp:'Pediatrician',dep:'Pediatrics',hrs:'9:00 AM – 12:00 PM',days:['Mon','Tue','Wed','Thu','Fri'],room:'105',fl:1,st:'Delayed',ret:'11:15'},
+  {id:4,n:'Dr. Vikram Rao',sp:'Neurologist',dep:'Neurology',hrs:'2:00 PM – 5:00 PM',days:['Tue','Fri'],room:'310',fl:3,st:'Unavailable',ret:''},
+  {id:5,n:'Dr. Neha Gupta',sp:'Dermatologist',dep:'Dermatology',hrs:'10:00 AM – 2:00 PM',days:['Mon','Thu','Sat'],room:'208',fl:2,st:'On Leave',ret:''}],
+ dupd:ago(8),
+ fac:[
+  {n:'Registration Desk',fl:0,room:'G-01',d:'New patient registration'},{n:'Emergency',fl:0,room:'G-10',d:'24×7 emergency care'},
+  {n:'Pharmacy',fl:0,room:'G-05',d:'Open 24 hours'},{n:'Billing Counter',fl:1,room:'101',d:'Payments and insurance'},
+  {n:'Laboratory',fl:1,room:'118',d:'Blood and pathology tests'},{n:'Radiology',fl:2,room:'220',d:'X-ray, ultrasound, CT'},
+  {n:'Cardiology OPD',fl:2,room:'204',d:'Heart care clinic'},{n:'Neurology OPD',fl:3,room:'310',d:'Brain and nerve clinic'}],
+ hn:[{id:1,t:'Visiting hours',b:'Daily 4:00 PM – 6:00 PM. Two visitors per patient.',at:ago(1500)},{id:2,t:'Free health camp',b:'Free blood-pressure screening every Saturday, 9 AM–12 PM.',at:ago(2000)}],
+ ap:[{ref:'APT-2026-558201',name:'Sunil Verma',mobile:'9876500033',doc:1,date:new Date(Date.now()+864e5).toISOString().slice(0,10),reason:'Chest discomfort follow-up',status:'Requested',at:ago(200)}]
+}}
+let S;try{S=JSON.parse(localStorage.getItem('cc2'))}catch(e){}if(!S)S=seed();
+const SB_URL='YOUR_SUPABASE_URL',SB_KEY='YOUR_SUPABASE_ANON_KEY';
+const SB_ON=!SB_URL.startsWith('YOUR_'),SBH={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'};
+let lastRev='';
+const save=()=>{try{localStorage.setItem('cc2',JSON.stringify(S))}catch(e){}
+ if(SB_ON){lastRev=String(Date.now());fetch(SB_URL+'/rest/v1/app_state?on_conflict=id',{method:'POST',headers:{...SBH,Prefer:'resolution=merge-duplicates'},body:JSON.stringify({id:'main',data:S,rev:lastRev})}).catch(()=>toast('Could not sync. Saved on this device only.'))}};
+async function pull(first){try{const r=await fetch(SB_URL+'/rest/v1/app_state?id=eq.main&select=data,rev',{headers:SBH});const j=await r.json();
+ if(Array.isArray(j)&&j.length){if(j[0].rev!==lastRev){lastRev=j[0].rev;S=j[0].data;const a=document.activeElement;if(first||!a||!/INPUT|TEXTAREA|SELECT/.test(a.tagName))route()}}else if(first)save()}catch(e){}}
+let user=null;
+const cls=s=>({'Available':'ok','Consulting':'warn','Delayed':'warn','Unavailable':'bad','On Leave':'gray','Temporarily Unavailable':'warn','Closed':'bad','Approved':'ok','Rejected':'bad','Confirmed':'ok','Cancelled':'bad','Completed':'ok'}[s]||'gray');
+const badge=s=>`<span class="badge b-${cls(s)}">${esc(s)}</span>`;
+const retMsg=r=>r?`Staff expected to return at ${t12(r)}.`:'Return time not yet confirmed.';
+function toast(m){const e=document.createElement('div');e.className='toast';e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+function ask(m,cb){const e=document.createElement('div');e.className='modal';e.innerHTML=`<div class="card"><p>${esc(m)}</p><button class="btn bad" id="y">Confirm</button> <button class="btn alt" id="n">Cancel</button></div>`;document.body.appendChild(e);e.querySelector('#n').onclick=()=>e.remove();e.querySelector('#y').onclick=()=>{e.remove();cb()}}
+const tabs=(base,items,cur)=>`<div class="tabs">${items.map(([k,l])=>`<a href="#/${base}/${k}" class="${k==cur?'on':''}">${l}</a>`).join('')}</div>`;
+const empty=m=>`<div class="empty">${m}</div>`;
+const num=n=>String(n).padStart(6,'0');
+
+function home(){
+ const r=S.rtps,av=S.docs.filter(d=>d.st=='Available'||d.st=='Consulting').length;
+ return`<div class="hero"><h1>Public services and healthcare, in one place.</h1><p>CivicCare brings RTPS Seva Kendra and the Smart Hospital Portal together. Check live availability, apply, book and track without the queue.</p>
+ <form id="gs" class="row" style="max-width:560px"><input id="gq" placeholder="Search notices, services, doctors, departments…" aria-label="Search"><button class="btn alt" style="flex:0">Search</button></form></div>
+ <div id="sr"></div>
+ <div class="grid"><div class="card"><h3>RTPS Seva Kendra</h3>${badge(r.status)}<p>${r.status=='Available'?'Counter is open.':r.status=='Closed'?'Counter is closed.':retMsg(r.ret)}</p><p class="mut">Hours: ${esc(r.hours)}</p><a class="btn" href="#/rtps/info">Open RTPS</a></div>
+ <div class="card"><h3>Smart Hospital</h3>${badge('Available')}<p>${av} of ${S.docs.length} doctors available or consulting now.</p><p class="mut">Emergency: open 24×7</p><a class="btn" href="#/hospital/doctors">Open Hospital</a></div></div>
+ <p class="stamp">Live information last updated: ${fmt(r.updated>S.dupd?r.updated:S.dupd)}</p>
+ <h3>Quick links</h3><div class="row" style="max-width:640px"><a class="btn alt" href="#/rtps/track">Track application</a><a class="btn alt" href="#/hospital/doctors">Doctor directory</a><a class="btn alt" href="#/hospital/directory">Hospital facilities</a></div>
+ <h3>Important notices</h3><div class="grid">${[...S.rn.filter(n=>n.st=='published').map(n=>({...n,s:'RTPS'})),...S.hn.map(n=>({...n,s:'Hospital'}))].sort((a,b)=>b.at.localeCompare(a.at)).slice(0,4).map(n=>`<div class="card"><span class="badge b-gray">${n.s}</span><h3>${esc(n.t)}</h3><p>${esc(n.b)}</p><span class="stamp">${fmt(n.at)}</span></div>`).join('')}</div>
+ <h3>Contact and help</h3><div class="card">Call 1800-000-0000 (demo) or email help@civiccare.example. In an emergency, go to the hospital Emergency desk on the ground floor.</div>`}
+function homeInit(){const f=$('#gs');if(!f)return;f.onsubmit=e=>{e.preventDefault();const q=$('#gq').value.trim().toLowerCase();if(!q){$('#sr').innerHTML='';return}
+ const R=[];S.services.forEach(s=>(s.n+s.d).toLowerCase().includes(q)&&R.push(['Service',s.n,'#/rtps/info']));
+ S.rn.filter(n=>n.st=='published').forEach(n=>(n.t+n.b).toLowerCase().includes(q)&&R.push(['Notice',n.t,'#/rtps/notices']));
+ S.hn.forEach(n=>(n.t+n.b).toLowerCase().includes(q)&&R.push(['Hospital notice',n.t,'#/hospital/notices']));
+ S.docs.forEach(d=>(d.n+d.sp+d.dep).toLowerCase().includes(q)&&R.push(['Doctor',d.n+' · '+d.sp,'#/hospital/doctors']));
+ S.fac.forEach(x=>(x.n+x.d+x.room).toLowerCase().includes(q)&&R.push(['Facility',x.n+' · Room '+x.room,'#/hospital/directory']));
+ $('#sr').innerHTML=`<div class="card" style="margin-bottom:14px"><b>${R.length} result(s)</b>${R.length?R.map(r=>`<div><span class="badge b-gray">${r[0]}</span> <a href="${r[2]}">${esc(r[1])}</a></div>`).join(''):empty('No matches found. Try a different word.')}</div>`}}
+
+function rtps(t){const r=S.rtps;let b='';
+ if(t=='info'){b=`<div class="card"><h3>Counter status ${badge(r.status)}</h3>
+  <p>${r.status=='Temporarily Unavailable'?'<b>'+retMsg(r.ret)+'</b>':r.status=='Available'?'The counter is open.':'The counter is closed.'}${r.reason?' Reason: '+esc(r.reason)+'.':''}</p>
+  <p class="mut">Hours: ${esc(r.hours)}. ${esc(r.closedNote)}</p><p class="stamp">Last status update: ${fmt(r.updated)}${r.next?' · Next expected update: '+t12(r.next):''}</p></div>
+  <h3>Services and required documents</h3><div class="grid">${S.services.map(s=>`<div class="card"><h3>${esc(s.n)}</h3><p>${esc(s.d)}</p><p><b>Documents:</b> ${esc(s.docs)}</p><p class="mut">Processing: ${esc(s.days)}</p><a class="btn sm" href="#/rtps/apply">Apply</a></div>`).join('')}</div>`}
+ if(t=='apply')b=`<div class="card" style="max-width:560px"><h3>Application form</h3><form id="af" novalidate>
+  <label>Full name</label><input name="name"><div class="err" data-e="name"></div>
+  <label>Mobile number (10 digits)</label><input name="mobile" inputmode="numeric"><div class="err" data-e="mobile"></div>
+  <label>Service</label><select name="service">${S.services.map(s=>`<option>${esc(s.n)}</option>`).join('')}</select>
+  <label>Address</label><textarea name="addr" rows="2"></textarea><div class="err" data-e="addr"></div>
+  <label><input type="checkbox" name="ok" style="width:auto"> I confirm I have the required documents.</label><div class="err" data-e="ok"></div>
+  <p><button class="btn">Submit application</button></p></form><div id="res"></div></div>`;
+ if(t=='track')b=`<div class="card" style="max-width:560px"><h3>Track your application</h3><form id="tf" class="row"><input id="tr" placeholder="e.g. RTPS-2026-104822"><button class="btn" style="flex:0">Track</button></form><div id="res" style="margin-top:12px"></div><p class="mut">Demo reference to try: RTPS-2026-104822</p></div>`;
+ if(t=='notices'){const n=S.rn.filter(n=>n.st=='published');b=n.length?`<div class="grid">${n.map(n=>`<div class="card"><h3>${esc(n.t)}</h3><p>${esc(n.b)}</p><span class="stamp">${fmt(n.at)}</span></div>`).join('')}</div>`:empty('No notices are published right now.')}
+ return`<h2>RTPS Seva Kendra</h2>${tabs('rtps',[['info','Counter & services'],['apply','Apply'],['track','Track'],['notices','Notices']],t)}${b}`}
+function rtpsInit(t){
+ if(t=='apply'){const f=$('#af');f.onsubmit=e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f));const E={};
+  if(!d.name||d.name.trim().length<3)E.name='Enter your full name.';if(!/^[6-9]\d{9}$/.test(d.mobile||''))E.mobile='Enter a valid 10-digit mobile number.';
+  if(!d.addr||d.addr.trim().length<8)E.addr='Enter your full address.';if(!d.ok)E.ok='Please confirm to continue.';
+  document.querySelectorAll('[data-e]').forEach(x=>x.textContent=E[x.dataset.e]||'');if(Object.keys(E).length)return;
+  let ref;do ref='RTPS-2026-'+num(Math.floor(Math.random()*1e6));while(S.apps.some(a=>a.ref==ref));
+  S.apps.unshift({ref,name:d.name.trim(),mobile:d.mobile,service:d.service,addr:d.addr.trim(),status:'Submitted',at:now()});S.act.unshift('New application '+ref);save();f.reset();
+  $('#res').innerHTML=`<div class="badge b-ok" style="display:block;padding:12px;margin-top:10px">Application submitted. Your reference number is <b>${ref}</b>. Save it to track progress.</div>`;toast('Application submitted')}}
+ if(t=='track'){$('#tf').onsubmit=e=>{e.preventDefault();const v=$('#tr').value.trim().toUpperCase();if(!v){$('#res').innerHTML='<div class="err">Enter a reference number.</div>';return}
+  $('#res').innerHTML='<span class="spin"></span>Searching…';setTimeout(()=>{const a=S.apps.find(x=>x.ref==v);$('#res').innerHTML=a?`<div class="card"><b>${a.ref}</b> ${badge(a.status)}<p>${esc(a.service)}</p><span class="stamp">Submitted ${fmt(a.at)}</span></div>`:empty('No application found for that reference number. Check it and try again.')},450)}}}
+
+function hospital(t){let b='';
+ if(t=='doctors'){b=`<div class="card"><div class="row"><div><label>Search</label><input id="dq" placeholder="Name, specialty or department"></div>
+  <div><label>Availability</label><select id="ds"><option value="">All</option>${['Available','Consulting','Delayed','Unavailable','On Leave'].map(s=>`<option>${s}</option>`).join('')}</select></div>
+  <div><label>Consults on</label><select id="dd"><option value="">Any day</option>${DAYS.map(s=>`<option>${s}</option>`).join('')}</select></div></div></div>
+  <p class="stamp">Doctor availability last updated: ${fmt(S.dupd)}</p><div id="dl" class="grid"></div>`}
+ if(t=='directory')b=`<div class="card"><label>Search departments and rooms</label><input id="fq" placeholder="e.g. pharmacy, 204, laboratory"></div><div id="fl" style="margin-top:14px"></div>`;
+ if(t=='book')b=`<div class="card" style="max-width:560px"><h3>Request an appointment</h3><form id="pf" novalidate>
+  <label>Patient name</label><input name="name"><div class="err" data-e="name"></div><label>Mobile number</label><input name="mobile" inputmode="numeric"><div class="err" data-e="mobile"></div>
+  <label>Doctor</label><select name="doc">${S.docs.map(d=>`<option value="${d.id}">${esc(d.n)} · ${esc(d.sp)}</option>`).join('')}</select>
+  <label>Preferred date</label><input type="date" name="date" min="${new Date().toISOString().slice(0,10)}"><div class="err" data-e="date"></div>
+  <label>Reason for visit</label><textarea name="reason" rows="2"></textarea><div class="err" data-e="reason"></div><p><button class="btn">Send request</button></p></form><div id="res"></div></div>`;
+ if(t=='notices')b=`<div class="grid">${S.hn.map(n=>`<div class="card"><h3>${esc(n.t)}</h3><p>${esc(n.b)}</p><span class="stamp">${fmt(n.at)}</span></div>`).join('')}<div class="card"><h3>Contact</h3><p>Reception: 0612-000-0000 (demo)<br>Emergency: 0612-000-0100 (demo)<br>Email: care@civiccare.example</p></div></div>`;
+ return`<h2>Smart Hospital</h2>${tabs('hospital',[['doctors','Doctors'],['directory','Facilities'],['book','Appointments'],['notices','Notices & contact']],t)}${b}`}
+function hospInit(t){
+ if(t=='doctors'){const draw=()=>{const q=$('#dq').value.toLowerCase(),s=$('#ds').value,d=$('#dd').value;
+  const L=S.docs.filter(x=>(x.n+x.sp+x.dep).toLowerCase().includes(q)&&(!s||x.st==s)&&(!d||x.days.includes(d)));
+  $('#dl').innerHTML=L.length?L.map(x=>`<div class="card"><h3>${esc(x.n)}</h3>${badge(x.st)}<p>${esc(x.sp)} · ${esc(x.dep)}</p><p class="mut">${esc(x.hrs)} · ${x.days.join(', ')}<br>Room ${x.room}, Floor ${x.fl}</p>${x.st=='Available'||x.st=='Consulting'?'':`<p><b>${x.st=='On Leave'?'Return time not yet confirmed.':x.ret?'Estimated return: '+t12(x.ret)+'.':'Return time not yet confirmed.'}</b></p>`}</div>`).join(''):`<div style="grid-column:1/-1">${empty('No doctors match your filters.')}</div>`};
+  ['dq','ds','dd'].forEach(i=>$('#'+i).oninput=draw);draw()}
+ if(t=='directory'){const draw=()=>{const q=$('#fq').value.toLowerCase();const L=S.fac.filter(x=>(x.n+x.d+x.room).toLowerCase().includes(q));
+  const fl=[...new Set(L.map(x=>x.fl))].sort();$('#fl').innerHTML=fl.length?fl.map(f=>`<h3>${f==0?'Ground floor':'Floor '+f}</h3><div class="grid">${L.filter(x=>x.fl==f).map(x=>`<div class="card"><b>${esc(x.n)}</b><p class="mut">Room ${x.room}<br>${esc(x.d)}</p></div>`).join('')}</div>`).join(''):empty('No facility matches your search.')};$('#fq').oninput=draw;draw()}
+ if(t=='book'){const f=$('#pf');f.onsubmit=e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f)),E={};
+  if(!d.name||d.name.trim().length<3)E.name='Enter the patient’s name.';if(!/^[6-9]\d{9}$/.test(d.mobile||''))E.mobile='Enter a valid 10-digit mobile number.';
+  if(!d.date)E.date='Choose a date.';if(!d.reason||d.reason.trim().length<5)E.reason='Briefly describe the reason.';
+  document.querySelectorAll('[data-e]').forEach(x=>x.textContent=E[x.dataset.e]||'');if(Object.keys(E).length)return;
+  const ref='APT-2026-'+num(Math.floor(Math.random()*1e6));S.ap.unshift({ref,name:d.name.trim(),mobile:d.mobile,doc:+d.doc,date:d.date,reason:d.reason.trim(),status:'Requested',at:now()});save();f.reset();
+  $('#res').innerHTML=`<div class="badge b-ok" style="display:block;padding:12px;margin-top:10px">Request sent. Your reference is <b>${ref}</b>. The hospital will confirm shortly.</div>`;toast('Appointment requested')}}}
+
+function login(){return`<div class="card" style="max-width:420px;margin:auto"><h3>Staff login</h3><p class="mut">Demo accounts: <b>rtps</b> / seva123 · <b>hospital</b> / care123 · <b>admin</b> / admin123</p>
+ <form id="lf"><label>Username</label><input name="u" autocomplete="username"><label>Password</label><input type="password" name="p" autocomplete="current-password"><div class="err" id="le"></div><p><button class="btn">Sign in</button></p></form></div>`}
+const USERS={rtps:['seva123','RTPS staff'],hospital:['care123','Hospital staff'],admin:['admin123','Platform admin']};
+function loginInit(){$('#lf').onsubmit=e=>{e.preventDefault();const u=e.target.u.value.trim().toLowerCase(),p=e.target.p.value;
+ if(USERS[u]&&USERS[u][0]==p){user=u;toast('Signed in');route()}else $('#le').textContent='Incorrect username or password.'}}
+function staff(){const can=(k)=>user=='admin'||user==k;
+ let h=`<div class="row" style="align-items:center"><h2 style="flex:1">Staff dashboard · ${USERS[user][1]}</h2><button class="btn alt" style="flex:0" id="lo">Log out</button></div>`;
+ if(can('rtps')){const r=S.rtps,pend=S.apps.filter(a=>a.status=='Submitted'||a.status=='Under Review').length;
+  h+=`<h3>RTPS Seva Kendra</h3><div class="grid"><div class="card"><b>${S.apps.length}</b> applications · <b>${pend}</b> pending<p class="mut">Recent: ${esc(S.act.slice(0,3).join(' · '))}</p></div></div>
+  <div class="card" style="margin:14px 0"><h3>Counter status</h3><form id="rs"><div class="row"><div><label>Status</label><select name="st">${['Available','Temporarily Unavailable','Closed'].map(s=>`<option ${s==r.status?'selected':''}>${s}</option>`).join('')}</select></div>
+  <div><label>Reason</label><input name="reason" value="${esc(r.reason)}"></div><div><label>Expected return</label><input type="time" name="ret" value="${r.ret}"></div><div><label>Next update</label><input type="time" name="next" value="${r.next}"></div></div>
+  <div class="row"><div><label>Opening hours</label><input name="hours" value="${esc(r.hours)}"></div><div><label>Closed-day notice</label><input name="cn" value="${esc(r.closedNote)}"></div></div><p><button class="btn">Update status</button></p></form></div>
+  <div class="card" style="margin-bottom:14px"><h3>Notices</h3><form id="nf" class="row"><input name="t" placeholder="Title"><input name="b" placeholder="Message"><button class="btn" style="flex:0">Publish</button></form>
+  <div class="scroll"><table><tr><th>Title</th><th>Status</th><th></th></tr>${S.rn.map(n=>`<tr><td>${esc(n.t)}</td><td>${badge(n.st=='published'?'Available':'On Leave').replace(/Available|On Leave/,n.st)}</td><td><button class="btn sm alt" onclick="togN(${n.id})">${n.st=='published'?'Archive':'Publish'}</button></td></tr>`).join('')}</table></div></div>
+  <div class="card"><h3>Applications</h3><input id="aq" placeholder="Search by reference, name or service" style="margin-bottom:10px"><div class="scroll" id="at"></div></div>`}
+ if(can('hospital')){h+=`<h3 style="margin-top:22px">Smart Hospital</h3><div class="card"><h3>Doctor availability</h3><div class="scroll"><table><tr><th>Doctor</th><th>Status</th><th>Return</th><th></th></tr>${S.docs.map(d=>`<tr><td>${esc(d.n)}</td><td><select id="s${d.id}">${['Available','Consulting','Delayed','Unavailable','On Leave'].map(s=>`<option ${s==d.st?'selected':''}>${s}</option>`).join('')}</select></td><td><input type="time" id="r${d.id}" value="${d.ret}"></td><td><button class="btn sm" onclick="upD(${d.id})">Save</button></td></tr>`).join('')}</table></div></div>
+  <div class="card" style="margin-top:14px"><h3>Appointment requests</h3><div class="scroll"><table><tr><th>Ref</th><th>Patient</th><th>Doctor</th><th>Date</th><th>Status</th><th></th></tr>${S.ap.map(a=>`<tr><td>${a.ref}</td><td>${esc(a.name)}</td><td>${esc(S.docs.find(d=>d.id==a.doc)?.n||'')}</td><td>${a.date}</td><td>${badge(a.status)}</td><td>${a.status=='Requested'?`<button class="btn sm" onclick="upA('${a.ref}','Confirmed')">Confirm</button> <button class="btn sm bad" onclick="upA('${a.ref}','Cancelled')">Cancel</button>`:''}</td></tr>`).join('')}</table></div></div>`}
+ return h}
+function appTable(){const q=($('#aq')?.value||'').toLowerCase();const L=S.apps.filter(a=>(a.ref+a.name+a.service).toLowerCase().includes(q));
+ $('#at').innerHTML=L.length?`<table><tr><th>Reference</th><th>Applicant</th><th>Service</th><th>Submitted</th><th>Status</th></tr>${L.map(a=>`<tr><td>${a.ref}</td><td>${esc(a.name)}<br><span class="mut">${esc(a.mobile)}</span></td><td>${esc(a.service)}</td><td>${fmt(a.at)}</td><td><select onchange="upApp('${a.ref}',this.value)">${['Submitted','Under Review','Approved','Rejected'].map(s=>`<option ${s==a.status?'selected':''}>${s}</option>`).join('')}</select></td></tr>`).join('')}</table>`:empty('No applications match your search.')}
+function upApp(ref,s){const a=S.apps.find(x=>x.ref==ref);const go=()=>{a.status=s;S.act.unshift(ref+' → '+s);save();toast('Status updated');route()};
+ s=='Rejected'?ask('Reject application '+ref+'?',go):go()}
+function togN(id){const n=S.rn.find(x=>x.id==id);ask((n.st=='published'?'Archive':'Publish')+' this notice?',()=>{n.st=n.st=='published'?'archived':'published';save();route()})}
+function upD(id){const d=S.docs.find(x=>x.id==id);d.st=$('#s'+id).value;d.ret=$('#r'+id).value;S.dupd=now();save();toast('Doctor status updated');route()}
+function upA(ref,s){ask(s+' appointment '+ref+'?',()=>{S.ap.find(a=>a.ref==ref).status=s;save();route()})}
+function staffInit(){$('#lo').onclick=()=>ask('Log out?',()=>{user=null;location.hash='#/';route()});
+ const rs=$('#rs');if(rs){rs.onsubmit=e=>{e.preventDefault();const d=Object.fromEntries(new FormData(rs));
+  if(d.st=='Temporarily Unavailable'&&!d.reason.trim()){toast('Please give a reason');return}
+  Object.assign(S.rtps,{status:d.st,reason:d.reason.trim(),ret:d.st=='Available'?'':d.ret,next:d.next,hours:d.hours,closedNote:d.cn,updated:now()});S.act.unshift('Counter set to '+d.st);save();toast('Counter status updated');route()};
+  $('#nf').onsubmit=e=>{e.preventDefault();const t=e.target.t.value.trim(),b=e.target.b.value.trim();if(!t||!b){toast('Title and message are required');return}
+   S.rn.unshift({id:Date.now(),t,b,st:'published',at:now()});save();toast('Notice published');route()};
+  $('#aq').oninput=appTable;appTable()}}
+
+function route(){const p=(location.hash||'#/').slice(2).split('/');const r=p[0]||'home',t=p[1];let h,init;
+ document.getElementById('lk').classList.remove('open');
+ document.querySelectorAll('.links a').forEach(a=>a.classList.toggle('on',a.dataset.r==r));
+ if(r=='rtps'){const k=t||'info';h=rtps(k);init=()=>rtpsInit(k)}
+ else if(r=='hospital'){const k=t||'doctors';h=hospital(k);init=()=>hospInit(k)}
+ else if(r=='staff'){if(user){h=staff();init=staffInit}else{h=login();init=loginInit}}
+ else{h=home();init=homeInit}
+ $('#app').innerHTML=h;init&&init();window.scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+if(SB_ON){pull(true);setInterval(()=>pull(false),5000)}
+</script></body></html>
